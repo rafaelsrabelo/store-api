@@ -10,7 +10,15 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
-
+  pgAadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@store.com.br
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
   web:
     build: .
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
@@ -23,7 +31,7 @@ services:
       - db
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432
-
+  
 volumes:
   pg_data:
   bundle:
